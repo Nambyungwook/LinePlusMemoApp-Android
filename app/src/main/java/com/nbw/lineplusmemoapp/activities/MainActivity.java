@@ -65,6 +65,11 @@ public class MainActivity extends AppCompatActivity {
         memoListItems = new ArrayList<MemoListItem>();
         ArrayList<String> tmpImgArray = new ArrayList<String>();
         tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
+        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
+        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
+        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
+        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
+        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
 
 
         memoListItems.add(new MemoListItem(1, "해1", "해 사진입니당~~1",tmpImgArray));

@@ -8,9 +8,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.ImgListAdapter;
+import com.nbw.lineplusmemoapp.list.ImgListDecoration;
 import com.nbw.lineplusmemoapp.list.ImgListItem;
 
 import java.util.ArrayList;
@@ -54,13 +56,13 @@ public class MemoViewActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
         img_recycle_view_memo_view.setLayoutManager(layoutManager);
 
-        imgListAdapter = new ImgListAdapter(this, imgArray, onClickItem);
+        imgListAdapter = new ImgListAdapter();
+
+        imgListAdapter.setImgItemList(imgArray);
+
+        img_recycle_view_memo_view.setAdapter(imgListAdapter);
+
+        ImgListDecoration imgListDecoration = new ImgListDecoration();
+        img_recycle_view_memo_view.addItemDecoration(imgListDecoration);
     }
-
-    private View.OnClickListener onClickItem = new View.OnClickListener() {
-        @Override
-        public void onClick(View v) {
-
-        }
-    };
 }

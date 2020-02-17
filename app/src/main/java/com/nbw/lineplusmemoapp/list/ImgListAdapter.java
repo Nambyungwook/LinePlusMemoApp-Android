@@ -22,29 +22,26 @@ import java.util.ArrayList;
 public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ViewHolder> {
 
     private ArrayList<String> imgItemList;
-    private Context context;
-    private View.OnClickListener onClickItem;
 
     Bitmap bitmap;
 
-    public ImgListAdapter(Context context, ArrayList<String> imgItemList, View.OnClickListener onClickItem) {
-        this.context = context;
-        this.imgItemList = imgItemList;
-        this.onClickItem = onClickItem;
+    public void setImgItemList(ArrayList<String> imgList) {
+        imgItemList = imgList;
     }
-
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.img_item, parent, false);
+        // 사용할 아이템의 뷰를 생성해준다.
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.img_item, parent, false);
 
-        return new ViewHolder(view);
+        ImgListAdapter.ViewHolder holder = new ImgListAdapter.ViewHolder(view);
+
+        return holder;
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String item = imgItemList.get(position);
 
         //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
         final String previewImg = imgItemList.get(position);
@@ -79,7 +76,6 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ViewHold
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        holder.iv_item_img.setOnClickListener(onClickItem);
     }
 
     @Override
