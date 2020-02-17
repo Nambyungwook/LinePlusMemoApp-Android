@@ -1,12 +1,17 @@
 package com.nbw.lineplusmemoapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 
 import com.nbw.lineplusmemoapp.R;
+import com.nbw.lineplusmemoapp.list.ImgListAdapter;
+import com.nbw.lineplusmemoapp.list.ImgListItem;
 
 import java.util.ArrayList;
 
@@ -19,6 +24,8 @@ public class MemoViewActivity extends AppCompatActivity {
 
     TextView tv_title_big;
     TextView tv_content_big;
+    RecyclerView img_recycle_view_memo_view;
+    ImgListAdapter imgListAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -33,9 +40,27 @@ public class MemoViewActivity extends AppCompatActivity {
 
         tv_title_big = (TextView) findViewById(R.id.tv_title_big);
         tv_content_big = (TextView) findViewById(R.id.tv_content_big);
+        img_recycle_view_memo_view = (RecyclerView) findViewById(R.id.img_recycle_view_memo_view);
 
         tv_title_big.setText(title);
         tv_content_big.setText(content);
 
+        setImgRecycleView(imgArray);
+
     }
+
+    private void setImgRecycleView(ArrayList<String> imgArray) {
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
+        img_recycle_view_memo_view.setLayoutManager(layoutManager);
+
+        imgListAdapter = new ImgListAdapter(this, imgArray, onClickItem);
+    }
+
+    private View.OnClickListener onClickItem = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+
+        }
+    };
 }

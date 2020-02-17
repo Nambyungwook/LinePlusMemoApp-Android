@@ -6,11 +6,12 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 
 import com.nbw.lineplusmemoapp.R;
-import com.nbw.lineplusmemoapp.memolist.MemoListAdapter;
-import com.nbw.lineplusmemoapp.memolist.MemoListItem;
+import com.nbw.lineplusmemoapp.list.MemoListAdapter;
+import com.nbw.lineplusmemoapp.list.MemoListItem;
 
 import java.util.ArrayList;
 
@@ -69,5 +70,10 @@ public class MainActivity extends AppCompatActivity {
         memoListItems.add(new MemoListItem(1, "해1", "해 사진입니당~~1",tmpImgArray));
         memoListItems.add(new MemoListItem(2, "해2", "해 사진입니당~~2",tmpImgArray));
         memoListItems.add(new MemoListItem(3, "해3", "해 사진입니당~~3",tmpImgArray));
+    }
+
+    public void onClickAddMemo(View view) {
+        Intent intent = new Intent(MainActivity.this, MemoSettingActivity.class);
+        startActivity(intent);
     }
 }

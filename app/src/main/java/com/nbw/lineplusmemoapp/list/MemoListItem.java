@@ -1,7 +1,6 @@
-package com.nbw.lineplusmemoapp.memolist;
+package com.nbw.lineplusmemoapp.list;
 
 import java.util.ArrayList;
-import java.util.List;
 
 public class MemoListItem {
     private int id;
