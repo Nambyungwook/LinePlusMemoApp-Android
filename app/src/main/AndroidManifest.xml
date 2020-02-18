@@ -11,7 +11,10 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activities.MemoSettingActivity"></activity>
+        <activity android:name=".activities.ImageAddDialogActivity"
+            android:screenOrientation="portrait"
+            android:theme="@style/popupTheme"></activity>
+        <activity android:name=".activities.MemoSettingActivity" />
         <activity android:name=".activities.MemoViewActivity" />
         <activity android:name=".activities.MainActivity">
             <intent-filter>

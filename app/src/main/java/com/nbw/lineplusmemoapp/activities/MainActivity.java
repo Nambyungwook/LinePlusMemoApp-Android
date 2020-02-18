@@ -3,6 +3,8 @@ package com.nbw.lineplusmemoapp.activities;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -12,8 +14,12 @@ import android.widget.ListView;
 import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.MemoListAdapter;
 import com.nbw.lineplusmemoapp.list.MemoListItem;
+import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
+import com.nbw.lineplusmemoapp.tables.MemoTable;
 
 import java.util.ArrayList;
+
+import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,13 +34,15 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         //test용 메모리스트 설정
-        this.setTestMemoList();
+        //this.setTestMemoList();
+
+        final Cursor cursor = getMemoData();
 
         //layout xml 연결
         memoListView = (ListView) findViewById(R.id.memo_list_view);
 
         //메모리스트 어댑터 생성
-        final MemoListAdapter memoListAdapter = new MemoListAdapter(this, memoListItems);
+        MemoListAdapter memoListAdapter = new MemoListAdapter(this, cursor);
         //메모리스트 어댑터 설정
         memoListView.setAdapter(memoListAdapter);
 
@@ -43,39 +51,35 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                int id = memoListAdapter.getItem(position).getId();
-                String title = memoListAdapter.getItem(position).getTitle();
-                String content = memoListAdapter.getItem(position).getContent();
-                ArrayList<String> imgArray = memoListAdapter.getItem(position).getImgArray();
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
+                String title = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
+                String content = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
+                //ArrayList<String> imgArray = memoListAdapter.getItem(position).getImgArray();
 
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
                 intent.putExtra("id", id);
                 intent.putExtra("title", title);
                 intent.putExtra("content", content);
-                intent.putExtra("imgArray", imgArray);
+                //intent.putExtra("imgArray", imgArray);
                 startActivity(intent);
             }
         });
-
-
     }
 
-    //test용 메모리스트 설정
-    public void setTestMemoList() {
-        memoListItems = new ArrayList<MemoListItem>();
-        ArrayList<String> tmpImgArray = new ArrayList<String>();
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-        tmpImgArray.add("https://kr.seaicons.com/wp-content/uploads/2015/10/Sun-icon3.png");
-
-
-        memoListItems.add(new MemoListItem(1, "해1", "해 사진입니당~~1",tmpImgArray));
-        memoListItems.add(new MemoListItem(2, "해2", "해 사진입니당~~2",tmpImgArray));
-        memoListItems.add(new MemoListItem(3, "해3", "해 사진입니당~~3",tmpImgArray));
+    //DB에서 메모테이블 조회하는 메소드
+    private Cursor getMemoData() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        return databaseHelper.getReadableDatabase()
+                .query(MEMO_TABLE_NAME,null,null,null, null, null, null);
     }
+
+//    //DB에서 이미지테이블 조회하는 메소드
+//    private Cursor getImgData() {
+//        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+//        return databaseHelper.getReadableDatabase()
+//                .query(IMG_TABLE_NAME,null,null,null, null, null, null);
+//    }
+
 
     public void onClickAddMemo(View view) {
         Intent intent = new Intent(MainActivity.this, MemoSettingActivity.class);

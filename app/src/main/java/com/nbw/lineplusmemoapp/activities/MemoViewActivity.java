@@ -47,7 +47,7 @@ public class MemoViewActivity extends AppCompatActivity {
         tv_title_big.setText(title);
         tv_content_big.setText(content);
 
-        setImgRecycleView(imgArray);
+        //setImgRecycleView(imgArray);
 
     }
 
