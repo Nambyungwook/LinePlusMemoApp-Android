@@ -15,34 +15,32 @@ import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.MemoListAdapter;
 import com.nbw.lineplusmemoapp.list.MemoListItem;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
+import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;
 
 import java.util.ArrayList;
 
+import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
     //메모 리스트뷰
     ListView memoListView;
-    //메모 리스트아이템들
-    ArrayList<MemoListItem> memoListItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //test용 메모리스트 설정
-        //this.setTestMemoList();
-
-        final Cursor cursor = getMemoData();
+        final Cursor cursorMemoData = getMemoData();
+        final Cursor cursorImgData = getImgData();
 
         //layout xml 연결
         memoListView = (ListView) findViewById(R.id.memo_list_view);
 
         //메모리스트 어댑터 생성
-        MemoListAdapter memoListAdapter = new MemoListAdapter(this, cursor);
+        MemoListAdapter memoListAdapter = new MemoListAdapter(this, cursorMemoData);
         //메모리스트 어댑터 설정
         memoListView.setAdapter(memoListAdapter);
 
@@ -51,13 +49,17 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
-                int id = cursor.getInt(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
-                String title = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
-                String content = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
-                //ArrayList<String> imgArray = memoListAdapter.getItem(position).getImgArray();
+                int idMemo = cursorMemoData.getInt(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
+                String title = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
+                String content = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
+//                int cnt = 0;
+//                int idImg = cursorImgData.getInt(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX));
+//                if ()
+//                for ()
+//                ArrayList<String> imgArray = cursorImgData.getString(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_IMG));
 
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
-                intent.putExtra("id", id);
+                intent.putExtra("id", idMemo);
                 intent.putExtra("title", title);
                 intent.putExtra("content", content);
                 //intent.putExtra("imgArray", imgArray);
@@ -73,12 +75,12 @@ public class MainActivity extends AppCompatActivity {
                 .query(MEMO_TABLE_NAME,null,null,null, null, null, null);
     }
 
-//    //DB에서 이미지테이블 조회하는 메소드
-//    private Cursor getImgData() {
-//        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-//        return databaseHelper.getReadableDatabase()
-//                .query(IMG_TABLE_NAME,null,null,null, null, null, null);
-//    }
+    //DB에서 이미지테이블 조회하는 메소드
+    private Cursor getImgData() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(this);
+        return databaseHelper.getReadableDatabase()
+                .query(IMG_TABLE_NAME,null,null,null, null, null, null);
+    }
 
 
     public void onClickAddMemo(View view) {

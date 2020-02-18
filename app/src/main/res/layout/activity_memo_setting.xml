@@ -4,62 +4,69 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activities.MemoSettingActivity"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    tools:context=".activities.MemoSettingActivity">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="50dp"
-        android:orientation="vertical">
-
-        <EditText
-            android:id="@+id/et_title"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="제목"
-            android:background="@null"/>
-
-    </LinearLayout>
-
-    <LinearLayout
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_weight="1">
 
-        <ScrollView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_height="50dp"
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/et_content"
-                    android:gravity="center"
+                    android:id="@+id/et_title"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="메모 내용"
-                    android:background="@null"/>
+                    android:background="@null"
+                    android:gravity="center"
+                    android:hint="제목" />
+
             </LinearLayout>
 
-        </ScrollView>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1">
 
-    </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="100dp">
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="200dp">
+                    <EditText
+                        android:id="@+id/et_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:background="@null"
+                        android:gravity="center"
+                        android:hint="메모 내용" />
+                </LinearLayout>
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/img_recycle_view_memo_setting"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="horizontal"/>
+            </LinearLayout>
 
-    </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="200dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/img_recycle_view_memo_setting"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -68,19 +75,17 @@
 
         <Button
             android:id="@+id/btn_add_img"
-            android:text="이미지추가"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:onClick="onClickAddImg"/>
+            android:onClick="onClickAddImg"
+            android:text="이미지추가" />
 
         <Button
             android:id="@+id/btn_save_memo"
-            android:text="메모저장"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:onClick="onClickSaveMemo"/>
+            android:text="메모저장" />
 
     </LinearLayout>
-
 
 </LinearLayout>
