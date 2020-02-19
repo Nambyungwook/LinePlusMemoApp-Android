@@ -14,6 +14,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nbw.lineplusmemoapp.R;
+import com.nbw.lineplusmemoapp.activities.MainActivity;
+import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
+import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;
 
 import java.io.IOException;
@@ -23,12 +26,17 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
+import static com.nbw.lineplusmemoapp.activities.MainActivity.contextMain;
+import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
+
 //메로 리스트 어댑터
 public class MemoListAdapter extends CursorAdapter {
 
     Context mContext = null;
     LayoutInflater mLayoutInflater = null;
     ArrayList<MemoListItem> memoListItems;
+
+    int memoId;
 
     // url주소에서 이미지 설정시 사용하기위한 bitmap
     Bitmap bitmap;
@@ -50,42 +58,60 @@ public class MemoListAdapter extends CursorAdapter {
 
         String title = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
         String content = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
+        memoId = cursor.getInt(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
 
         tvTitle.setText(title);
         tvContent.setText(content);
 
-//        //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
-//        final String previewImg = memoListItems.get(position).getImgArray().get(0);
-//
-//        //url일 경우 bitmap 변환 후 이미지뷰에 설정
-//        Thread mTread = new Thread() {
-//            @Override
-//            public void run() {
-//                try {
-//                    URL imgUrl = new URL(previewImg);
-//
-//                    HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-//                    conn.setDoInput(true);
-//                    conn.connect();
-//
-//                    InputStream is = conn.getInputStream();
-//                    bitmap = BitmapFactory.decodeStream(is);
-//                } catch (MalformedURLException e) {
-//                    e.printStackTrace();
-//                } catch (IOException e) {
-//                    e.printStackTrace();
-//                }
-//            }
-//        };
-//
-//        mTread.start();
-//
-//        try {
-//            mTread.join();
-//
-//            ivSmall.setImageBitmap(bitmap);
-//        } catch (InterruptedException e) {
-//            e.printStackTrace();
-//        }
+        Cursor cursorImg = getImgData();
+        ArrayList<String> imgArray = new ArrayList<String>();
+        while (cursorImg.moveToNext()) {
+            if (cursorImg.getInt(cursorImg.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX))==memoId) {
+                String tmpImgStr = cursorImg.getString(1);
+                imgArray.add(tmpImgStr);
+            }
+        }
+
+        //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
+        final String previewImg = imgArray.get(0);
+
+        //url일 경우 bitmap 변환 후 이미지뷰에 설정
+        Thread mTread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    URL imgUrl = new URL(previewImg);
+
+                    HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
+                    conn.setDoInput(true);
+                    conn.connect();
+
+                    InputStream is = conn.getInputStream();
+                    bitmap = BitmapFactory.decodeStream(is);
+                } catch (MalformedURLException e) {
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+        };
+
+        mTread.start();
+
+        try {
+            mTread.join();
+
+            ivSmall.setImageBitmap(bitmap);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
+    //DB에서 이미지테이블 조회하는 메소드
+    private Cursor getImgData() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(contextMain);
+
+        return databaseHelper.getReadableDatabase()
+                .query(IMG_TABLE_NAME,null,null,null, null, null, null);
     }
 }

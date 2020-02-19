@@ -25,6 +25,8 @@ import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Set;
 
 public class ImageAddDialogActivity extends AppCompatActivity {
 
@@ -81,7 +83,12 @@ public class ImageAddDialogActivity extends AppCompatActivity {
     public void onClickOK(View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("LinePlusMemoApp", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("strImg", strUrl);
+
+        Set<String> set = new HashSet<String>();
+
+        set.addAll(imgArray);
+
+        editor.putStringSet("imgArray", set);
         editor.putInt("strImgChecker",1);
         editor.commit();
 

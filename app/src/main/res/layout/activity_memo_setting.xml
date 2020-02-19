@@ -78,13 +78,21 @@
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="onClickAddImg"
-            android:text="이미지추가" />
+            android:text="이미지불러오기" />
 
         <Button
             android:id="@+id/btn_save_memo"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="메모저장" />
+            android:text="메모저장"
+            android:onClick="onClickSaveMemo"/>
+
+        <Button
+            android:id="@+id/btn_save_all"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="전체저장"
+            android:onClick="onClickSaveALL"/>
 
     </LinearLayout>
 

@@ -2,6 +2,7 @@ package com.nbw.lineplusmemoapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -25,6 +26,8 @@ import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME
 
 public class MainActivity extends AppCompatActivity {
 
+    public static Context contextMain;
+
     //메모 리스트뷰
     ListView memoListView;
 
@@ -32,6 +35,8 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        contextMain = getApplicationContext();
 
         final Cursor cursorMemoData = getMemoData();
         final Cursor cursorImgData = getImgData();
@@ -52,11 +57,6 @@ public class MainActivity extends AppCompatActivity {
                 int idMemo = cursorMemoData.getInt(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
                 String title = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
                 String content = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
-//                int cnt = 0;
-//                int idImg = cursorImgData.getInt(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX));
-//                if ()
-//                for ()
-//                ArrayList<String> imgArray = cursorImgData.getString(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_IMG));
 
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
                 intent.putExtra("id", idMemo);
