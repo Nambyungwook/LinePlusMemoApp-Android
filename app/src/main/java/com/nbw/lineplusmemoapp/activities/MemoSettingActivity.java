@@ -34,6 +34,9 @@ public class MemoSettingActivity extends AppCompatActivity {
     private EditText et_title;
     private EditText et_content;
     private RecyclerView img_recycle_view_memo_setting;
+    private Button btn_save_memo;
+    private Button btn_save_all;
+
     private long memoId = -1;
     private long imgId = -1;
 
@@ -51,6 +54,8 @@ public class MemoSettingActivity extends AppCompatActivity {
         et_title = (EditText) findViewById(R.id.et_title);
         et_content = (EditText) findViewById(R.id.et_content);
         img_recycle_view_memo_setting = (RecyclerView) findViewById(R.id.img_recycle_view_memo_setting);
+        btn_save_memo = (Button) findViewById(R.id.btn_save_memo);
+        btn_save_all = (Button) findViewById(R.id.btn_save_all);
 
     }
 
@@ -84,6 +89,8 @@ public class MemoSettingActivity extends AppCompatActivity {
                 setResult(RESULT_OK);
             }
         }
+        btn_save_memo.setVisibility(View.GONE);
+        btn_save_all.setVisibility(View.VISIBLE);
 
     }
 
@@ -142,6 +149,7 @@ public class MemoSettingActivity extends AppCompatActivity {
 
             setImgRecycleView(imgArray);
         }
+
     }
 
 

@@ -39,7 +39,6 @@ public class MainActivity extends AppCompatActivity {
         contextMain = getApplicationContext();
 
         final Cursor cursorMemoData = getMemoData();
-        final Cursor cursorImgData = getImgData();
 
         //layout xml 연결
         memoListView = (ListView) findViewById(R.id.memo_list_view);
@@ -54,15 +53,26 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                final Cursor cursorImgData = getImgData();
+
                 int idMemo = cursorMemoData.getInt(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
                 String title = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
                 String content = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
+
+                ArrayList<String> imgArray = new ArrayList<String>();
+                while (cursorImgData.moveToNext()) {
+                    if (cursorImgData.getInt(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX))==idMemo) {
+                        String tmpImgStr = cursorImgData.getString(1);
+                        imgArray.add(tmpImgStr);
+                    }
+                }
+                cursorImgData.close();
 
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
                 intent.putExtra("id", idMemo);
                 intent.putExtra("title", title);
                 intent.putExtra("content", content);
-                //intent.putExtra("imgArray", imgArray);
+                intent.putExtra("imgArray", imgArray);
                 startActivity(intent);
             }
         });
