@@ -1,25 +1,30 @@
 package com.nbw.lineplusmemoapp.activities;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.ImgListAdapter;
 import com.nbw.lineplusmemoapp.list.ImgListDecoration;
-import com.nbw.lineplusmemoapp.list.ImgListItem;
+import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
+import com.nbw.lineplusmemoapp.tables.ImageTable;
+import com.nbw.lineplusmemoapp.tables.MemoTable;
 
 import java.util.ArrayList;
+import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 
 public class MemoViewActivity extends AppCompatActivity {
 
@@ -91,10 +96,37 @@ public class MemoViewActivity extends AppCompatActivity {
 
             case R.id.memo_update :
                 //메모 내용 수정
+                Intent intent = new Intent(MemoViewActivity.this, MemoEditActivity.class);
+                startActivity(intent);
+                finish();
 
             case R.id.memo_delete :
                 //현재 메모 삭제
+                AlertDialog.Builder builder = new AlertDialog.Builder(MemoViewActivity.this);
+                builder.setTitle("메모 삭제");
+                builder.setMessage("메모를 삭제하시겠습니까?");
+                builder.setPositiveButton("예", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        SQLiteDatabase db = new DatabaseHelper(MemoViewActivity.this).getWritableDatabase();
+                        int deleteMemoCount = db.delete(MemoTable.MemoEntry.MEMO_TABLE_NAME, MemoTable.MemoEntry._ID + "=" + id, null);
+                        int deleteImgCount = db.delete(IMG_TABLE_NAME, ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX+"="+id, null);
 
+                        if (deleteMemoCount==0 && deleteImgCount==0) {
+                            Toast.makeText(MemoViewActivity.this, "메모삭제에 문제가 생겼습니다.", Toast.LENGTH_SHORT).show();
+                        } else {
+
+                            MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+                            mainActivity.finish();
+
+                            startActivity(new Intent(MemoViewActivity.this, MainActivity.class));
+                            finish();
+                        }
+
+                    }
+                });
+                builder.setNegativeButton("아니요",null);
+                builder.show();
             default:
                 return super.onOptionsItemSelected(item);
         }

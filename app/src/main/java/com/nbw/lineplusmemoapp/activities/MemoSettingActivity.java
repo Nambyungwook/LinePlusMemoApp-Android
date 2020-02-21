@@ -26,6 +26,9 @@ import com.nbw.lineplusmemoapp.tables.MemoTable;
 import java.util.ArrayList;
 import java.util.Set;
 
+import static com.nbw.lineplusmemoapp.activities.MainActivity.cursorMemoData;
+import static com.nbw.lineplusmemoapp.activities.MainActivity.memoListAdapter;
+import static com.nbw.lineplusmemoapp.activities.MainActivity.memoListView;
 import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME;
 
@@ -96,11 +99,14 @@ public class MemoSettingActivity extends AppCompatActivity {
 
     public void onClickSaveALL(View view) {
 
-        databaseHelper = new DatabaseHelper(this);
+        databaseHelper = new DatabaseHelper(MainActivity.MainActivity);
+        SQLiteDatabase dbRead = databaseHelper.getReadableDatabase();
         SQLiteDatabase db = databaseHelper.getWritableDatabase();
 
-        final Cursor cursorMemo = getMemoData();
-        int memo_id = cursorMemo.getCount();
+        Cursor cursor;
+        cursor = dbRead.rawQuery("SELECT "+ MemoTable.MemoEntry._ID+", "+ MemoTable.MemoEntry.COLUMN_NAME_TITLE +" FROM " + MEMO_TABLE_NAME, null);
+        cursor.moveToLast();
+        int memo_id = cursor.getInt(0);
 
         //가지고 있는 이미지 경로 or url 문자열이 있는지 확인
         if (imgArray!=null) {
@@ -126,6 +132,7 @@ public class MemoSettingActivity extends AppCompatActivity {
             startActivity(intent);
             finish();
 
+            return;
         }
 
         Intent intent = new Intent(this, MainActivity.class);
@@ -150,14 +157,6 @@ public class MemoSettingActivity extends AppCompatActivity {
             setImgRecycleView(imgArray);
         }
 
-    }
-
-
-    //DB에서 메모테이블 조회하는 메소드
-    private Cursor getMemoData() {
-        DatabaseHelper databaseHelper = new DatabaseHelper(this);
-        return databaseHelper.getReadableDatabase()
-                .query(MEMO_TABLE_NAME,null,null,null, null, null, null);
     }
 
     private void setImgRecycleView(ArrayList<String> imgArray) {

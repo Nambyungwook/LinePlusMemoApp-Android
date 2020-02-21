@@ -4,11 +4,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.BaseAdapter;
 import android.widget.CursorAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -26,7 +24,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import static com.nbw.lineplusmemoapp.activities.MainActivity.contextMain;
 import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 
 //메로 리스트 어댑터
@@ -109,9 +106,8 @@ public class MemoListAdapter extends CursorAdapter {
     }
 
     //DB에서 이미지테이블 조회하는 메소드
-    private Cursor getImgData() {
-        DatabaseHelper databaseHelper = new DatabaseHelper(contextMain);
-
+    public Cursor getImgData() {
+        DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.MainActivity);
         return databaseHelper.getReadableDatabase()
                 .query(IMG_TABLE_NAME,null,null,null, null, null, null);
     }

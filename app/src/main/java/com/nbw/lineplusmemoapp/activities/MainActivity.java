@@ -1,7 +1,9 @@
 package com.nbw.lineplusmemoapp.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.ListView;
 
 import com.nbw.lineplusmemoapp.R;
+import com.nbw.lineplusmemoapp.list.ImgListAdapter;
 import com.nbw.lineplusmemoapp.list.MemoListAdapter;
 import com.nbw.lineplusmemoapp.list.MemoListItem;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
@@ -26,25 +29,30 @@ import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME
 
 public class MainActivity extends AppCompatActivity {
 
-    public static Context contextMain;
+    public static Activity MainActivity;
+    public static Cursor cursorMemoData;
+    public static MemoListAdapter memoListAdapter;
+    public static ImgListAdapter imgListAdapter;
 
     //메모 리스트뷰
-    ListView memoListView;
+    public static ListView memoListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        contextMain = getApplicationContext();
+        MainActivity = MainActivity.this;
 
-        final Cursor cursorMemoData = getMemoData();
+        cursorMemoData = getMemoData();
 
         //layout xml 연결
         memoListView = (ListView) findViewById(R.id.memo_list_view);
 
+        imgListAdapter = new ImgListAdapter();
+
         //메모리스트 어댑터 생성
-        MemoListAdapter memoListAdapter = new MemoListAdapter(this, cursorMemoData);
+        memoListAdapter = new MemoListAdapter(this, cursorMemoData);
         //메모리스트 어댑터 설정
         memoListView.setAdapter(memoListAdapter);
 
@@ -66,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
                         imgArray.add(tmpImgStr);
                     }
                 }
-                cursorImgData.close();
+
 
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
                 intent.putExtra("id", idMemo);
@@ -79,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
     }
 
     //DB에서 메모테이블 조회하는 메소드
-    private Cursor getMemoData() {
+    public Cursor getMemoData() {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         return databaseHelper.getReadableDatabase()
                 .query(MEMO_TABLE_NAME,null,null,null, null, null, null);
     }
 
     //DB에서 이미지테이블 조회하는 메소드
-    private Cursor getImgData() {
+    public Cursor getImgData() {
         DatabaseHelper databaseHelper = new DatabaseHelper(this);
         return databaseHelper.getReadableDatabase()
                 .query(IMG_TABLE_NAME,null,null,null, null, null, null);
@@ -96,5 +104,11 @@ public class MainActivity extends AppCompatActivity {
     public void onClickAddMemo(View view) {
         Intent intent = new Intent(MainActivity.this, MemoSettingActivity.class);
         startActivity(intent);
+    }
+
+    @Override
+    public void onBackPressed() {
+
+        return;
     }
 }
