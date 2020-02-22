@@ -97,8 +97,14 @@ public class MemoViewActivity extends AppCompatActivity {
             case R.id.memo_update :
                 //메모 내용 수정
                 Intent intent = new Intent(MemoViewActivity.this, MemoEditActivity.class);
+                intent.putExtra("id", id);
+                intent.putExtra("title", title);
+                intent.putExtra("content", content);
+                intent.putExtra("imgArray", imgArray);
                 startActivity(intent);
                 finish();
+
+                break;
 
             case R.id.memo_delete :
                 //현재 메모 삭제
@@ -127,9 +133,12 @@ public class MemoViewActivity extends AppCompatActivity {
                 });
                 builder.setNegativeButton("아니요",null);
                 builder.show();
+
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return false;
     }
 
 }

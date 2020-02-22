@@ -4,6 +4,7 @@ import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -69,36 +70,43 @@ public class MemoListAdapter extends CursorAdapter {
             //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
             final String previewImg = imgArray.get(0);
 
-            //url일 경우 bitmap 변환 후 이미지뷰에 설정
-            Thread mTread = new Thread() {
-                @Override
-                public void run() {
-                    try {
-                        URL imgUrl = new URL(previewImg);
+            if (previewImg.substring(0, 3).equals("http")) {
+                //url일 경우 bitmap 변환 후 이미지뷰에 설정
+                Thread mTread = new Thread() {
+                    @Override
+                    public void run() {
+                        try {
+                            URL imgUrl = new URL(previewImg);
 
-                        HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-                        conn.setDoInput(true);
-                        conn.connect();
+                            HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
+                            conn.setDoInput(true);
+                            conn.connect();
 
-                        InputStream is = conn.getInputStream();
-                        bitmap = BitmapFactory.decodeStream(is);
-                    } catch (MalformedURLException e) {
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                            InputStream is = conn.getInputStream();
+                            bitmap = BitmapFactory.decodeStream(is);
+                        } catch (MalformedURLException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
                     }
+                };
+
+                mTread.start();
+
+                try {
+                    mTread.join();
+
+                    ivSmall.setImageBitmap(bitmap);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
                 }
-            };
-
-            mTread.start();
-
-            try {
-                mTread.join();
-
-                ivSmall.setImageBitmap(bitmap);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
+            } else {
+                //url이미지 주소가 아닌경우
+                Uri uri = Uri.parse(previewImg);
+                ivSmall.setImageURI(uri);
             }
+
         } else {
             ivSmall.setImageResource(R.drawable.ic_launcher_background);
         }

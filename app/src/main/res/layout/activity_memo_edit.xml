@@ -23,7 +23,7 @@
                 android:orientation="vertical">
 
                 <EditText
-                    android:id="@+id/et_title"
+                    android:id="@+id/et_title_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
@@ -42,7 +42,7 @@
                     android:layout_height="100dp">
 
                     <EditText
-                        android:id="@+id/et_content"
+                        android:id="@+id/et_content_edit"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
@@ -57,7 +57,7 @@
                 android:layout_height="200dp">
 
                 <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/img_recycle_view_memo_setting"
+                    android:id="@+id/img_recycle_view_memo_edit"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:orientation="horizontal" />
@@ -74,21 +74,21 @@
         android:orientation="horizontal">
 
         <Button
-            android:id="@+id/btn_add_img"
+            android:id="@+id/btn_add_img_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:onClick="onClickAddImg"
             android:text="이미지불러오기" />
 
         <Button
-            android:id="@+id/btn_save_memo"
+            android:id="@+id/btn_save_memo_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="메모저장"
             android:onClick="onClickSaveMemo"/>
 
         <Button
-            android:id="@+id/btn_save_all"
+            android:id="@+id/btn_save_all_edit"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="전체저장"

@@ -2,6 +2,8 @@ package com.nbw.lineplusmemoapp.list;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.nbw.lineplusmemoapp.R;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
@@ -45,35 +48,41 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ViewHold
         //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
         final String previewImg = imgItemList.get(position);
 
-        //url일 경우 bitmap 변환 후 이미지뷰에 설정
-        Thread mTread = new Thread() {
-            @Override
-            public void run() {
-                try {
-                    URL imgUrl = new URL(previewImg);
+        if (previewImg.substring(0, 3).equals("http")) {
+            //url일 경우 bitmap 변환 후 이미지뷰에 설정
+            Thread mTread = new Thread() {
+                @Override
+                public void run() {
+                    try {
+                        URL imgUrl = new URL(previewImg);
 
-                    HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
-                    conn.setDoInput(true);
-                    conn.connect();
+                        HttpURLConnection conn = (HttpURLConnection) imgUrl.openConnection();
+                        conn.setDoInput(true);
+                        conn.connect();
 
-                    InputStream is = conn.getInputStream();
-                    bitmap = BitmapFactory.decodeStream(is);
-                } catch (MalformedURLException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                        InputStream is = conn.getInputStream();
+                        bitmap = BitmapFactory.decodeStream(is);
+                    } catch (MalformedURLException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
                 }
+            };
+
+            mTread.start();
+
+            try {
+                mTread.join();
+
+                holder.iv_item_img.setImageBitmap(bitmap);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
             }
-        };
-
-        mTread.start();
-
-        try {
-            mTread.join();
-
-            holder.iv_item_img.setImageBitmap(bitmap);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        } else {
+            //url이미지 주소가 아닌경우
+            Uri uri = Uri.parse(previewImg);
+            holder.iv_item_img.setImageURI(uri);
         }
     }
 
