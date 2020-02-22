@@ -2,6 +2,7 @@ package com.nbw.lineplusmemoapp.activities;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -10,8 +11,10 @@ import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.provider.MediaStore;
 import android.view.View;
 import android.view.WindowManager;
@@ -23,12 +26,15 @@ import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.ImgListAdapter;
 import com.nbw.lineplusmemoapp.list.ImgListDecoration;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -41,6 +47,10 @@ public class ImageAddDialogActivity extends AppCompatActivity {
     RecyclerView img_recycle_view_img_dialog;
 
     Bitmap bitmap;
+
+    private String imageFilePath;
+
+    private Uri photoUri;
 
     String strUrl;
     ArrayList<String> imgArray = new ArrayList<String>();
@@ -103,7 +113,25 @@ public class ImageAddDialogActivity extends AppCompatActivity {
 
     //사진촬영 메소드
     private void takePhoto() {
-        // 촬영 후 이미지 가져옴
+        Intent cameraIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
+        startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+
+        if (cameraIntent.resolveActivity(getPackageManager()) != null) {
+            File photoFile = null;
+            try {
+                photoFile = createImageFile();
+            } catch (IOException ex) {
+                // Error occurred while creating the File
+            }
+
+            if (photoFile != null) {
+                photoUri = FileProvider.getUriForFile(this, getPackageName(), photoFile);
+
+                cameraIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoUri);
+                startActivityForResult(cameraIntent, REQUEST_IMAGE_CAPTURE);
+            }
+        }
+
 
     }
 
@@ -129,6 +157,13 @@ public class ImageAddDialogActivity extends AppCompatActivity {
 
         } else if (requestCode == REQUEST_IMAGE_CAPTURE && resultCode == RESULT_OK) {
 
+            //촬영한 이미지 Uri
+            Uri captureImageUri = photoUri;
+            String strUri = captureImageUri.toString();
+            imgArray.add(strUri);
+
+            setImgRecycleView(imgArray);
+
         }
     }
 
@@ -148,6 +183,19 @@ public class ImageAddDialogActivity extends AppCompatActivity {
 
         ImgListDecoration imgListDecoration = new ImgListDecoration();
         img_recycle_view_img_dialog.addItemDecoration(imgListDecoration);
+    }
+
+    private File createImageFile() throws IOException {
+        String timeStamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
+        String imageFileName = "TEST_" + timeStamp + "_";
+        File storageDir = getExternalFilesDir(Environment.DIRECTORY_PICTURES);
+        File image = File.createTempFile(
+                imageFileName,      /* prefix */
+                ".jpg",         /* suffix */
+                storageDir          /* directory */
+        );
+        imageFilePath = image.getAbsolutePath();
+        return image;
     }
 
 }

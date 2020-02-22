@@ -48,7 +48,7 @@ public class ImgListAdapter extends RecyclerView.Adapter<ImgListAdapter.ViewHold
         //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
         final String previewImg = imgItemList.get(position);
 
-        if (previewImg.substring(0, 3).equals("http")) {
+        if (previewImg.substring(0,4).equals("http")) {
             //url일 경우 bitmap 변환 후 이미지뷰에 설정
             Thread mTread = new Thread() {
                 @Override
