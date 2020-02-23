@@ -128,17 +128,16 @@ public class MemoSettingActivity extends AppCompatActivity {
                     }
                 }
             }
-
+            MainActivity.MainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
-
-            return;
+        } else {
+            MainActivity.MainActivity.finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     //액티비티 재시작시에 해야하는 일

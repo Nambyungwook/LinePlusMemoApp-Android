@@ -161,16 +161,16 @@ public class MemoEditActivity extends AppCompatActivity {
                 }
             }
 
+            MainActivity.MainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
-
-            return;
+        } else {
+            MainActivity.MainActivity.finish();
+            Intent intent = new Intent(this, MainActivity.class);
+            startActivity(intent);
+            finish();
         }
-
-        Intent intent = new Intent(this, MainActivity.class);
-        startActivity(intent);
-        finish();
     }
 
     //기존 디비 데이터 삭제 메소드
