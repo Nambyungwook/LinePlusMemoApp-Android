@@ -128,12 +128,14 @@ public class MemoSettingActivity extends AppCompatActivity {
                     }
                 }
             }
-            MainActivity.MainActivity.finish();
+            MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+            mainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         } else {
-            MainActivity.MainActivity.finish();
+            MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
+            mainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
