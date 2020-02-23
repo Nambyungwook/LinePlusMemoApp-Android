@@ -20,15 +20,21 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_margin="10dp"
+                android:background="@drawable/shape_round_border_gray">
 
                 <EditText
                     android:id="@+id/et_title"
+                    android:padding="10dp"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:background="@null"
                     android:gravity="center"
-                    android:hint="제목" />
+                    android:hint="제목"
+                    android:textColorHint="#000000"
+                    android:textSize="25dp"
+                    android:textColor="#000000"/>
 
             </LinearLayout>
 
@@ -38,15 +44,22 @@
                 android:layout_weight="1">
 
                 <LinearLayout
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="100dp">
+                    android:layout_height="200dp"
+                    android:background="@drawable/shape_round_border_gray">
 
                     <EditText
                         android:id="@+id/et_content"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:background="@null"
-                        android:gravity="center"
+                        android:padding="10dp"
+                        android:textColor="#000000"
+                        android:textSize="20dp"
+                        android:textColorHint="#000000"
                         android:hint="메모 내용" />
                 </LinearLayout>
 
@@ -54,9 +67,28 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="200dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:background="@drawable/shape_round_border_gray"
+                    android:layout_marginRight="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:padding="10dp"
+                    android:gravity="center"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="이미지"
+                    android:textColor="#000000"
+                    android:textSize="20dp"/>
 
                 <androidx.recyclerview.widget.RecyclerView
+                    android:padding="10dp"
+                    android:layout_marginBottom="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:background="@drawable/shape_round_border_gray"
                     android:id="@+id/img_recycle_view_memo_setting"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"

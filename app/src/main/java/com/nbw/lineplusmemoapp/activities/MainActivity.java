@@ -85,21 +85,24 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
 
+                //커서 설정
                 final Cursor cursorImgData = getImgData();
 
+                //메모 테이블의 칼럼 id, title, content 가져오기
                 int idMemo = cursorMemoData.getInt(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
                 String title = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_TITLE));
                 String content = cursorMemoData.getString(cursorMemoData.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
 
+                //어레이리스트에 이미지 테이블의 데이터 가져오기
                 ArrayList<String> imgArray = new ArrayList<String>();
                 while (cursorImgData.moveToNext()) {
+                    //현재 메모테이블칼럼의 아이디와 이미지 테이블 칼럼의 메모 아이디가 같은지 비교후에 가져오기
                     if (cursorImgData.getInt(cursorImgData.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX))==idMemo) {
                         String tmpImgStr = cursorImgData.getString(1);
                         imgArray.add(tmpImgStr);
                     }
                 }
-
-
+                //각각의 값들 인텐드로 넘겨주기
                 Intent intent = new Intent(getApplicationContext(), MemoViewActivity.class);
                 intent.putExtra("id", idMemo);
                 intent.putExtra("title", title);
@@ -124,12 +127,13 @@ public class MainActivity extends AppCompatActivity {
                 .query(IMG_TABLE_NAME,null,null,null, null, null, null);
     }
 
-
+    //메모 추가 버튼
     public void onClickAddMemo(View view) {
         Intent intent = new Intent(MainActivity.this, MemoSettingActivity.class);
         startActivity(intent);
     }
 
+    //메인화면 뒤로가기 버튼 막기
     @Override
     public void onBackPressed() {
 

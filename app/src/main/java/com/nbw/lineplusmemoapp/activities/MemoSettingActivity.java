@@ -1,5 +1,6 @@
 package com.nbw.lineplusmemoapp.activities;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.ImgListAdapter;
 import com.nbw.lineplusmemoapp.list.ImgListDecoration;
-import com.nbw.lineplusmemoapp.list.MemoListAdapter;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
 import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;
@@ -26,9 +26,6 @@ import com.nbw.lineplusmemoapp.tables.MemoTable;
 import java.util.ArrayList;
 import java.util.Set;
 
-import static com.nbw.lineplusmemoapp.activities.MainActivity.cursorMemoData;
-import static com.nbw.lineplusmemoapp.activities.MainActivity.memoListAdapter;
-import static com.nbw.lineplusmemoapp.activities.MainActivity.memoListView;
 import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME;
 
@@ -43,7 +40,10 @@ public class MemoSettingActivity extends AppCompatActivity {
     private long memoId = -1;
     private long imgId = -1;
 
+    //실제 사용할 이미지들
     private ArrayList<String> imgArray;
+    //ImageAddDialogActivity에서 받아온 이미지 주소 값 앞에 번호가 있는 값들
+    private ArrayList<String> receiveImgArray;
 
     DatabaseHelper databaseHelper;
 
@@ -111,6 +111,7 @@ public class MemoSettingActivity extends AppCompatActivity {
         //가지고 있는 이미지 경로 or url 문자열이 있는지 확인
         if (imgArray!=null) {
 
+            //받은 문자열 크기 만큼 디비에 저장
             for (int i = 0 ; i <imgArray.size(); i ++) {
                 ContentValues contentValues_img  = new ContentValues();
                 contentValues_img.put(ImageTable.ImageEntry.COLUMN_NAME_IMG, imgArray.get(i));
@@ -140,17 +141,39 @@ public class MemoSettingActivity extends AppCompatActivity {
         finish();
     }
 
+    //액티비티 재시작시에 해야하는 일
     @Override
     protected void onResume() {
         super.onResume();
 
+        //불러올수있는 이미지 데이터가 있는지 확인하여 데이터를 가져옴 sharedpreferences는 set을 사용하기 때문에 중복되는 이미지값을 받아오기위해 앞에 숫자를 추가
         SharedPreferences sharedPreferences = getSharedPreferences("LinePlusMemoApp", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         int strImgChecker = sharedPreferences.getInt("strImgChecker", 0);
         if (strImgChecker ==1) {
 
-            Set<String> set = sharedPreferences.getStringSet("imgArray", null);
-            imgArray = new ArrayList<String>(set);
+            Set<String> set = sharedPreferences.getStringSet("sendImgArray", null);
+            receiveImgArray = new ArrayList<String>(set);
+            imgArray = new ArrayList<String>();
+            //set에서 가져올때 순서가 반대이므로 바로 잡아준다.
+            for (int i = receiveImgArray.size()-1; i >= 0; i--) {
+                //추가된 이미지 만큼의 숫자가 있으므로 자릿수에 따라 다르게 문자열을 잘라준다. - 실제로 10000개이상의 이미지를 추가하는 일이 없을듯
+                if (i<10) {
+                    String tmpImgStr = receiveImgArray.get(i).substring(1);
+                    imgArray.add(tmpImgStr);
+                } else if (i<100) {
+                    String tmpImgStr = receiveImgArray.get(i).substring(2);
+                    imgArray.add(tmpImgStr);
+                } else if (i<1000) {
+                    String tmpImgStr = receiveImgArray.get(i).substring(3);
+                    imgArray.add(tmpImgStr);
+                } else if (i<10000) {
+                    String tmpImgStr = receiveImgArray.get(i).substring(4);
+                    imgArray.add(tmpImgStr);
+                }
+
+            }
+
             editor.putInt("strImgChecker",0);
             editor.commit();
 

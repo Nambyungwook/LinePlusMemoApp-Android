@@ -4,6 +4,7 @@
     android:layout_height="100dp">
 
     <ImageView
+        android:padding="10dp"
         android:id="@+id/iv_item_img"
         android:layout_width="match_parent"
         android:layout_height="match_parent"/>

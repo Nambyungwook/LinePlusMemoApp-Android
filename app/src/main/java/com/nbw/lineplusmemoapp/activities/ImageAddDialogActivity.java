@@ -28,10 +28,6 @@ import com.nbw.lineplusmemoapp.list.ImgListDecoration;
 
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -43,6 +39,8 @@ public class ImageAddDialogActivity extends AppCompatActivity {
     private int REQUEST_IMAGE_CAPTURE = 0;//사진촬영
     private int REQUEST_GALLERY = 1;//갤러리
 
+    private int REQUEST;
+
     EditText et_url;
     RecyclerView img_recycle_view_img_dialog;
 
@@ -53,7 +51,10 @@ public class ImageAddDialogActivity extends AppCompatActivity {
     private Uri photoUri;
 
     String strUrl;
+    //사용자가 입력한 이미지 주소들
     ArrayList<String> imgArray = new ArrayList<String>();
+    //다른 액티비티로 전달할 이미지 주소들
+    ArrayList<String> sendImgArray = new ArrayList<String>();
 
     ImgListAdapter imgListAdapter;
 
@@ -93,17 +94,23 @@ public class ImageAddDialogActivity extends AppCompatActivity {
 
     }
 
-    //확인 - 이미지 주소 문자열을 어레이 리스트로 만들어서 sharedPreferences를 사용해 로컬에 저장후 현재 액티비티 종료
+    //확인
     public void onClickOK(View view) {
         SharedPreferences sharedPreferences = getSharedPreferences("LinePlusMemoApp", MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
-        //set을 사용하여 중복되는 이미지를 제외한 이미지 주소 문자열 저장
+        //set을 사용해 저장하기 때문에 같은 이미지 저장이 안되는걸 고려하여 앞에 번호를 붙인다.
+        for (int i =0; i < imgArray.size(); i++) {
+            String tmpImgStr = i + imgArray.get(i);
+            sendImgArray.add(tmpImgStr);
+
+        }
+
         Set<String> set = new HashSet<String>();
 
-        set.addAll(imgArray);
+        set.addAll(sendImgArray);
 
-        editor.putStringSet("imgArray", set);
+        editor.putStringSet("sendImgArray", set);
         //이미지가 추가 되었는지 아닌지 판단하기위한 변수
         editor.putInt("strImgChecker",1);
         editor.commit();

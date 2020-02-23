@@ -54,9 +54,16 @@ public class MemoListAdapter extends CursorAdapter {
         String content = cursor.getString(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry.COLUMN_NAME_CONTENT));
         memoId = cursor.getInt(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
 
-        tvTitle.setText(title);
-        tvContent.setText(content);
+        //content 문자열 길이가 일정 길이 이상인 경우 리스트에 표시되는 문자열은 적당히 줄여서 표시
+        String previewContent = null;
+        if (content.length()>10) {
+            previewContent = content.substring(0,11) + "...";
+        }
 
+        tvTitle.setText(title);
+        tvContent.setText(previewContent);
+
+        //이미지 데이터 가져오기
         Cursor cursorImg = getImgData();
         ArrayList<String> imgArray = new ArrayList<String>();
         while (cursorImg.moveToNext()) {
@@ -70,7 +77,7 @@ public class MemoListAdapter extends CursorAdapter {
             //미리보기 이미지 주소 - url 혹은 스마트폰 내부 저장소 경로
             final String previewImg = imgArray.get(0);
 
-            if (previewImg.substring(0, 3).equals("http")) {
+            if (previewImg.substring(0, 4).equals("http")) {
                 //url일 경우 bitmap 변환 후 이미지뷰에 설정
                 Thread mTread = new Thread() {
                     @Override

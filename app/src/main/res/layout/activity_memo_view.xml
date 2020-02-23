@@ -9,40 +9,69 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="50dp"
+        android:background="@drawable/shape_round_border_gray"
+        android:layout_margin="10dp"
+        android:padding="10dp">
 
         <TextView
+            android:gravity="center"
             android:id="@+id/tv_title_big"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:text="제목"/>
+            android:text="제목"
+            android:textSize="25dp"
+            android:textColor="#000000"/>
 
     </LinearLayout>
     <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2">
+        android:layout_height="200dp">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent"
+            android:background="@drawable/shape_round_border_gray"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
+            android:padding="10dp">
 
             <TextView
                 android:id="@+id/tv_content_big"
                 android:text="본문"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:textSize="20dp"
+                android:textColor="#000000"/>
 
         </LinearLayout>
 
     </ScrollView>
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_weight="2"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView
+            android:background="@drawable/shape_round_border_gray"
+            android:layout_marginRight="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginLeft="10dp"
+            android:padding="10dp"
+            android:gravity="center"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="이미지"
+            android:textColor="#000000"
+            android:textSize="20dp"/>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:padding="10dp"
+            android:background="@drawable/shape_round_border_gray"
+            android:layout_marginLeft="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_marginRight="10dp"
             android:id="@+id/img_recycle_view_memo_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
