@@ -127,6 +127,7 @@ public class MainActivity extends AppCompatActivity {
     public void onClickAddMemo(View view) {
         Intent intent = new Intent(MainActivity.this, MemoSettingActivity.class);
         startActivity(intent);
+        finish();
     }
 
     //메인화면 뒤로가기 버튼 막기

@@ -160,15 +160,10 @@ public class MemoEditActivity extends AppCompatActivity {
                     }
                 }
             }
-
-            MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
-            mainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
         } else {
-            MainActivity mainActivity = (MainActivity)MainActivity.MainActivity;
-            mainActivity.finish();
             Intent intent = new Intent(this, MainActivity.class);
             startActivity(intent);
             finish();
