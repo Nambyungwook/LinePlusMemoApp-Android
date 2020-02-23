@@ -1,14 +1,11 @@
 package com.nbw.lineplusmemoapp.activities;
 
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.Manifest;
 import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -21,7 +18,6 @@ import com.gun0912.tedpermission.TedPermission;
 import com.nbw.lineplusmemoapp.R;
 import com.nbw.lineplusmemoapp.list.ImgListAdapter;
 import com.nbw.lineplusmemoapp.list.MemoListAdapter;
-import com.nbw.lineplusmemoapp.list.MemoListItem;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
 import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;

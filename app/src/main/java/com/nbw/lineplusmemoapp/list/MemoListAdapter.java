@@ -31,6 +31,7 @@ import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAM
 public class MemoListAdapter extends CursorAdapter {
 
     int memoId;
+    String previewContent;
 
     // url주소에서 이미지 설정시 사용하기위한 bitmap
     Bitmap bitmap;
@@ -55,9 +56,11 @@ public class MemoListAdapter extends CursorAdapter {
         memoId = cursor.getInt(cursor.getColumnIndexOrThrow(MemoTable.MemoEntry._ID));
 
         //content 문자열 길이가 일정 길이 이상인 경우 리스트에 표시되는 문자열은 적당히 줄여서 표시
-        String previewContent = null;
+        previewContent = null;
         if (content.length()>10) {
             previewContent = content.substring(0,11) + "...";
+        } else {
+            previewContent = content;
         }
 
         tvTitle.setText(title);
