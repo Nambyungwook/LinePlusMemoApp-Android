@@ -1,8 +1,6 @@
 package com.nbw.lineplusmemoapp.activities;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.ContentValues;
 import android.content.Intent;
@@ -16,8 +14,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.nbw.lineplusmemoapp.R;
-import com.nbw.lineplusmemoapp.list.ImgListAdapter;
-import com.nbw.lineplusmemoapp.list.ImgListDecoration;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
 import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;
@@ -25,7 +21,6 @@ import com.nbw.lineplusmemoapp.tables.MemoTable;
 import java.util.ArrayList;
 import java.util.Set;
 
-import static com.nbw.lineplusmemoapp.activities.MainActivity.imgListAdapter;
 import static com.nbw.lineplusmemoapp.tables.ImageTable.ImageEntry.IMG_TABLE_NAME;
 import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME;
 
@@ -42,7 +37,6 @@ public class MemoEditActivity extends AppCompatActivity {
 
     EditText et_title_edit;
     EditText et_content_edit;
-    RecyclerView img_recycle_view_memo_edit;
     Button btn_save_memo_edit;
     Button btn_save_all_edit;
 
@@ -55,7 +49,6 @@ public class MemoEditActivity extends AppCompatActivity {
 
         et_title_edit = (EditText) findViewById(R.id.et_title_edit);
         et_content_edit = (EditText) findViewById(R.id.et_content_edit);
-        img_recycle_view_memo_edit = (RecyclerView) findViewById(R.id.img_recycle_view_memo_edit);
         btn_save_memo_edit = (Button) findViewById(R.id.btn_save_memo_edit);
         btn_save_all_edit = (Button) findViewById(R.id.btn_save_all_edit);
 
@@ -67,24 +60,6 @@ public class MemoEditActivity extends AppCompatActivity {
 
         et_title_edit.setText(title);
         et_content_edit.setText(content);
-
-        setImgRecycleView(imgArray);
-    }
-
-    //이미지 주소, 경로가 들어간 arraylist를 입력으로 리사이클뷰에 이미지 보여주는 메소드
-    private void setImgRecycleView(ArrayList<String> imgArray) {
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this, LinearLayoutManager.HORIZONTAL, false);
-        img_recycle_view_memo_edit.setLayoutManager(layoutManager);
-
-        imgListAdapter = new ImgListAdapter();
-
-        imgListAdapter.setImgItemList(imgArray);
-
-        img_recycle_view_memo_edit.setAdapter(imgListAdapter);
-
-        ImgListDecoration imgListDecoration = new ImgListDecoration();
-        img_recycle_view_memo_edit.addItemDecoration(imgListDecoration);
     }
 
     public void onClickAddImg(View view) {
@@ -222,8 +197,6 @@ public class MemoEditActivity extends AppCompatActivity {
 
             editor.putInt("strImgChecker",0);
             editor.commit();
-
-            setImgRecycleView(imgArray);
         }
 
     }

@@ -9,7 +9,6 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Toast;
 
@@ -30,13 +29,13 @@ import static com.nbw.lineplusmemoapp.tables.MemoTable.MemoEntry.MEMO_TABLE_NAME
 
 public class MainActivity extends AppCompatActivity {
 
-    public static Activity MainActivity;
-    public static Cursor cursorMemoData;
-    public static MemoListAdapter memoListAdapter;
-    public static ImgListAdapter imgListAdapter;
+    public Activity MainActivity;
+    public Cursor cursorMemoData;
+    public MemoListAdapter memoListAdapter;
+    public ImgListAdapter imgListAdapter;
 
     //메모 리스트뷰
-    public static ListView memoListView;
+    public ListView memoListView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         PermissionListener permissionlistener = new PermissionListener() {
             @Override
             public void onPermissionGranted() {
-                Toast.makeText(MainActivity.this, "권한 허가", Toast.LENGTH_SHORT).show();
+                Toast.makeText(MainActivity.this, "권한 허가 상태", Toast.LENGTH_SHORT).show();
             }
 
             @Override

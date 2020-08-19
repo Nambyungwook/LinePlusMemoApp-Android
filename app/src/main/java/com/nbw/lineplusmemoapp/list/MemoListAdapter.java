@@ -13,7 +13,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.nbw.lineplusmemoapp.R;
-import com.nbw.lineplusmemoapp.activities.MainActivity;
 import com.nbw.lineplusmemoapp.sqlite.DatabaseHelper;
 import com.nbw.lineplusmemoapp.tables.ImageTable;
 import com.nbw.lineplusmemoapp.tables.MemoTable;
@@ -67,7 +66,7 @@ public class MemoListAdapter extends CursorAdapter {
         tvContent.setText(previewContent);
 
         //이미지 데이터 가져오기
-        Cursor cursorImg = getImgData();
+        Cursor cursorImg = getImgData(context);
         ArrayList<String> imgArray = new ArrayList<String>();
         while (cursorImg.moveToNext()) {
             if (cursorImg.getInt(cursorImg.getColumnIndexOrThrow(ImageTable.ImageEntry.COLUMN_NAME_MEMO_INDEX))==memoId) {
@@ -124,8 +123,8 @@ public class MemoListAdapter extends CursorAdapter {
     }
 
     //DB에서 이미지테이블 조회하는 메소드
-    public Cursor getImgData() {
-        DatabaseHelper databaseHelper = new DatabaseHelper(MainActivity.MainActivity);
+    public Cursor getImgData(Context context) {
+        DatabaseHelper databaseHelper = new DatabaseHelper(context);
         return databaseHelper.getReadableDatabase()
                 .query(IMG_TABLE_NAME,null,null,null, null, null, null);
     }

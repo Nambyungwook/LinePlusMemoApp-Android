@@ -2,6 +2,7 @@ package com.nbw.lineplusmemoapp.tables;
 
 import android.provider.BaseColumns;
 
+//이미지 테이블
 public class ImageTable {
 
     private ImageTable() {
